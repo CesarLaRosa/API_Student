@@ -7,6 +7,7 @@ public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	private Classes classID;
 	private String lastName;
 	private String firstName;
 
@@ -34,9 +35,17 @@ public class Student {
 		this.firstName = firstName;
 	}
 
+	public Classes getClassID() {
+		return classID;
+	}
+
+	public void setClassID(Classes classID) {
+		this.classID = classID;
+	}
+
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", lastName=" + lastName + ", firstName="
-				+ firstName + "]";
+		return "Student [id=" + id + ", classID=" + classID + ", lastName="
+				+ lastName + ", firstName=" + firstName + "]";
 	}
 }

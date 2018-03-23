@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	
+	<appender name="AppenderApplication" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.path}logapp.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m"/>
+		</layout>
+	</appender>
+	
+	<appender name="AppenderBaseDeDatos" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.path}logbd.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m"/>
+		</layout>
+	</appender>
+	
+	<appender name="AppenderBus" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.path}logbus.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m"/>
+		</layout>
+	</appender>
+	
+	<appender name="AppenderError" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${log4j.path}logerror.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m"/>
+		</layout>
+	</appender>
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %t (%c{1}.java:%L) %p - %m%n" />
+		</layout>
+	</appender>
+	
+	<logger name="LoggerApplication" additivity="false">
+		<level value="info"></level>
+		<appender-ref ref="AppenderApplication" />		
+	</logger>
+	
+	<logger name="LoggerBaseDeDatos" additivity="false">
+		<level value="info"></level>
+		<appender-ref ref="AppenderBaseDeDatos" />		
+	</logger>
+	
+	<logger name="LoggerBus" additivity="false">
+		<level value="info"></level>
+		<appender-ref ref="AppenderBus" />		
+	</logger>
+	
+	<logger name="LoggerError" additivity="false">
+		<level value="error"></level>
+		<appender-ref ref="AppenderError" />		
+	</logger>
+
+	<root>
+		<level value="info"></level>
+		<appender-ref ref="console" />
+	</root>
+</log4j:configuration>
