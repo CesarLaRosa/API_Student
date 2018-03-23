@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.studentapi.exceptions.ClassesNotFoundException;
 import com.api.studentapi.modelo.Classes;
 import com.api.studentapi.modelo.ResponseController;
 import com.api.studentapi.service.ClassesService;
@@ -29,6 +30,10 @@ public class ClassesController {
 	@RequestMapping(value = "/classes/{id}", method= RequestMethod.GET, produces = "application/json")
     public Classes showClasses(@PathVariable Integer id, Model model){
 		Classes classes = classesService.getClassesById(id);
+		
+		if (classes==null)
+			throw new ClassesNotFoundException("id-" + id);
+		
         return classes;
     }
 
@@ -45,6 +50,10 @@ public class ClassesController {
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Classes classes) {
 		Classes storedClasses = classesService.getClassesById(id);
+		
+		if (storedClasses==null)
+			throw new ClassesNotFoundException("id-" + id);
+		
 		storedClasses.setDescription(classes.getDescription());
 		storedClasses.setTittle(classes.getTittle());
 		classesService.saveClasses(storedClasses);
@@ -55,6 +64,10 @@ public class ClassesController {
 
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+		Classes storedClasses = classesService.getClassesById(id);
+		if (storedClasses==null)
+			throw new ClassesNotFoundException("id-" + id);
+		
 		classesService.deleteClasses(id);
         ResponseController respuestaBus = new ResponseController();
         respuestaBus.setMessage("Classes deleted successfully");

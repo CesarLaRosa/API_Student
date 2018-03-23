@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.studentapi.exceptions.StudentNotFoundException;
 import com.api.studentapi.modelo.ResponseController;
 import com.api.studentapi.modelo.Student;
 import com.api.studentapi.service.StudentService;
@@ -30,6 +31,10 @@ public class StudentController {
 	@RequestMapping(value = "/students/{id}", method= RequestMethod.GET, produces = "application/json")
     public Student showStudent(@PathVariable Integer id, Model model){
 		Student student = studentService.getStudentsById(id);
+		
+		if (student==null)
+		      throw new StudentNotFoundException("id-" + id);
+		
         return student;
     }
 
@@ -46,6 +51,10 @@ public class StudentController {
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Student student) {
 		Student storedStudent = studentService.getStudentsById(id);
+		
+		if (storedStudent==null)
+		      throw new StudentNotFoundException("id-" + id);
+		
 		storedStudent.setFirstName(student.getFirstName());
 		storedStudent.setLastName(student.getLastName());
 		studentService.saveStudent(storedStudent);
@@ -56,6 +65,11 @@ public class StudentController {
 
 	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+		Student storedStudent = studentService.getStudentsById(id);
+		
+		if (storedStudent==null)
+		      throw new StudentNotFoundException("id-" + id);
+		
 		studentService.deleteStudent(id);
         ResponseController respuestaBus = new ResponseController();
         respuestaBus.setMessage("Student deleted successfully");
