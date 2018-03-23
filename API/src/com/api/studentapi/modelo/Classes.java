@@ -29,4 +29,9 @@ public class Classes {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	@Override
+	public String toString() {
+		return "Classes [code=" + code + ", tittle=" + tittle
+				+ ", description=" + description + "]";
+	}
 }

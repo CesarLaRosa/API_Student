@@ -1,5 +1,6 @@
 package com.api.studentapi.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import com.api.studentapi.service.ClassesService;
 @RestController
 @RequestMapping("/api/classes")
 public class ClassesController {
+	private Logger logger = Logger.getLogger(getClass());
+	
 	@Autowired
 	private ClassesService classesService;
 	
@@ -29,6 +32,7 @@ public class ClassesController {
 	
 	@RequestMapping(value = "/classes/{id}", method= RequestMethod.GET, produces = "application/json")
     public Classes showClasses(@PathVariable Integer id, Model model){
+		logger.info("showClasses("+id+")");
 		Classes classes = classesService.getClassesById(id);
 		
 		if (classes==null)
@@ -39,7 +43,8 @@ public class ClassesController {
 
 
 	@RequestMapping(value = "/classes/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseController> saveProduct(@RequestBody Classes classes){
+    public ResponseEntity<ResponseController> save(@RequestBody Classes classes){
+		logger.info("save("+classes+")");
 		ResponseController respuestaBus = new ResponseController();
 		classesService.saveClasses(classes);
 		respuestaBus.setStatus(HttpStatus.CREATED.value());
@@ -49,6 +54,7 @@ public class ClassesController {
 
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Classes classes) {
+		logger.info("update("+classes+")");
 		Classes storedClasses = classesService.getClassesById(id);
 		
 		if (storedClasses==null)
@@ -64,6 +70,7 @@ public class ClassesController {
 
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+		logger.info("delete("+id+")");
 		Classes storedClasses = classesService.getClassesById(id);
 		if (storedClasses==null)
 			throw new ClassesNotFoundException("id-" + id);

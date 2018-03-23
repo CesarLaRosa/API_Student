@@ -1,5 +1,6 @@
 package com.api.studentapi.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import com.api.studentapi.service.StudentService;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
+	private Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired
 	private StudentService studentService;
@@ -30,6 +32,7 @@ public class StudentController {
 	
 	@RequestMapping(value = "/students/{id}", method= RequestMethod.GET, produces = "application/json")
     public Student showStudent(@PathVariable Integer id, Model model){
+		logger.info("showStudent("+id+")");
 		Student student = studentService.getStudentsById(id);
 		
 		if (student==null)
@@ -40,7 +43,8 @@ public class StudentController {
 
 
 	@RequestMapping(value = "/students/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseController> saveProduct(@RequestBody Student student){
+    public ResponseEntity<ResponseController> save(@RequestBody Student student){
+		logger.info("save("+student+")");
 		ResponseController respuestaBus = new ResponseController();
 		studentService.saveStudent(student);
 		respuestaBus.setStatus(HttpStatus.CREATED.value());
@@ -50,6 +54,8 @@ public class StudentController {
 
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Student student) {
+		logger.info("update("+id+","+student+")");
+		
 		Student storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
@@ -65,6 +71,7 @@ public class StudentController {
 
 	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
 	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+		logger.info("delete("+id+")");
 		Student storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
