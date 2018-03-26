@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import com.api.studentapi.model.Classes;
-import com.api.studentapi.model.Student;
+import com.api.studentapi.model.ClassModel;
+import com.api.studentapi.model.StudentModel;
 
 @RepositoryRestResource
-public interface  StudentRepository  extends CrudRepository<Student, Integer>{
-	List<Student> findByLastName(String lastName);
-	List<Student> findByFirstName(String firstName);
-	List<Student> findByClass(Classes searchable);
+public interface  StudentRepository  extends CrudRepository<StudentModel, Integer>{
+	List<StudentModel> findByLastName(String lastName);
+	List<StudentModel> findByFirstName(String firstName);
+	List<StudentModel> findByClass(ClassModel searchable);
 }

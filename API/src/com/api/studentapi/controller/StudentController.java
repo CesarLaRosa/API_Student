@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.studentapi.exceptions.StudentNotFoundException;
-import com.api.studentapi.model.ResponseController;
-import com.api.studentapi.model.Student;
+import com.api.studentapi.model.ResponseModel;
+import com.api.studentapi.model.StudentModel;
 import com.api.studentapi.service.StudentService;
 
 @RestController
@@ -25,15 +25,15 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@RequestMapping(value = "/students", method= RequestMethod.GET, produces = "application/json")
-    public Iterable<Student> list(Model model){
-        Iterable<Student> productList = studentService.listAllStudents();
+    public Iterable<StudentModel> list(Model model){
+        Iterable<StudentModel> productList = studentService.listAllStudents();
         return productList;
     }
 	
 	@RequestMapping(value = "/students/{id}", method= RequestMethod.GET, produces = "application/json")
-    public Student showStudent(@PathVariable Integer id, Model model){
+    public StudentModel showStudent(@PathVariable Integer id, Model model){
 		logger.info("showStudent("+id+")");
-		Student student = studentService.getStudentsById(id);
+		StudentModel student = studentService.getStudentsById(id);
 		
 		if (student==null)
 		      throw new StudentNotFoundException("id-" + id);
@@ -43,20 +43,20 @@ public class StudentController {
 
 
 	@RequestMapping(value = "/students/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseController> save(@RequestBody Student student){
+    public ResponseEntity<ResponseModel> save(@RequestBody StudentModel student){
 		logger.info("save("+student+")");
-		ResponseController respuestaBus = new ResponseController();
+		ResponseModel respuestaBus = new ResponseModel();
 		studentService.saveStudent(student);
 		respuestaBus.setStatus(HttpStatus.CREATED.value());
 		respuestaBus.setMessage("Student saved successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Student student) {
+	public ResponseEntity<ResponseModel> update(@PathVariable Integer id, @RequestBody StudentModel student) {
 		logger.info("update("+id+","+student+")");
 		
-		Student storedStudent = studentService.getStudentsById(id);
+		StudentModel storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
 		      throw new StudentNotFoundException("id-" + id);
@@ -64,22 +64,22 @@ public class StudentController {
 		storedStudent.setFirstName(student.getFirstName());
 		storedStudent.setLastName(student.getLastName());
 		studentService.saveStudent(storedStudent);
-		ResponseController respuestaBus = new ResponseController();
+		ResponseModel respuestaBus = new ResponseModel();
 		respuestaBus.setMessage("Student updated successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
-	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+	public ResponseEntity<ResponseModel> delete(@PathVariable Integer id){
 		logger.info("delete("+id+")");
-		Student storedStudent = studentService.getStudentsById(id);
+		StudentModel storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
 		      throw new StudentNotFoundException("id-" + id);
 		
 		studentService.deleteStudent(id);
-        ResponseController respuestaBus = new ResponseController();
+        ResponseModel respuestaBus = new ResponseModel();
         respuestaBus.setMessage("Student deleted successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
 	}
 }

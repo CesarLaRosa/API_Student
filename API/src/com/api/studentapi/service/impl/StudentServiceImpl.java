@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.studentapi.model.Classes;
-import com.api.studentapi.model.Student;
+import com.api.studentapi.model.ClassModel;
+import com.api.studentapi.model.StudentModel;
 import com.api.studentapi.repository.StudentRepository;
 import com.api.studentapi.service.StudentService;
 
@@ -16,17 +16,17 @@ public class StudentServiceImpl implements StudentService {
 	private StudentRepository studentRepository;
 	
 	@Override
-	public Iterable<Student> listAllStudents() {
+	public Iterable<StudentModel> listAllStudents() {
 		 return studentRepository.findAll();
 	}
 
 	@Override
-	public Student getStudentsById(Integer id) {
+	public StudentModel getStudentsById(Integer id) {
 		return studentRepository.findOne(id);
 	}
 
 	@Override
-	public Student saveStudent(Student student) {
+	public StudentModel saveStudent(StudentModel student) {
 		 return studentRepository.save(student);
 	}
 
@@ -36,17 +36,17 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Student> findByLastName(String lastName) {
+	public List<StudentModel> findByLastName(String lastName) {
 		return studentRepository.findByLastName(lastName);
 	}
 
 	@Override
-	public List<Student> findByFirstName(String firstName) {
+	public List<StudentModel> findByFirstName(String firstName) {
 		return studentRepository.findByFirstName(firstName);
 	}
 
 	@Override
-	public List<Student> findByClass(Classes searchable) {
+	public List<StudentModel> findByClass(ClassModel searchable) {
 		return studentRepository.findByClass(searchable);
 	}
 }

@@ -1,6 +1,6 @@
 package com.api.studentapi.model;
 
-public class ResponseController implements java.io.Serializable{
+public class ResponseModel implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

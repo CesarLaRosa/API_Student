@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.studentapi.exceptions.ClassesNotFoundException;
-import com.api.studentapi.model.Classes;
-import com.api.studentapi.model.ResponseController;
+import com.api.studentapi.model.ClassModel;
+import com.api.studentapi.model.ResponseModel;
 import com.api.studentapi.service.ClassesService;
 
 @RestController
@@ -25,15 +25,15 @@ public class ClassesController {
 	private ClassesService classesService;
 	
 	@RequestMapping(value = "/classes/", method = RequestMethod.GET)
-	public Iterable<Classes> list(Model model){
-        Iterable<Classes> classesList = classesService.listAllClasses();
+	public Iterable<ClassModel> list(Model model){
+        Iterable<ClassModel> classesList = classesService.listAllClasses();
         return classesList;
     }
 	
 	@RequestMapping(value = "/classes/{id}", method= RequestMethod.GET, produces = "application/json")
-    public Classes showClasses(@PathVariable Integer id, Model model){
+    public ClassModel showClasses(@PathVariable Integer id, Model model){
 		logger.info("showClasses("+id+")");
-		Classes classes = classesService.getClassesById(id);
+		ClassModel classes = classesService.getClassesById(id);
 		
 		if (classes==null)
 			throw new ClassesNotFoundException("id-" + id);
@@ -43,19 +43,19 @@ public class ClassesController {
 
 
 	@RequestMapping(value = "/classes/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseController> save(@RequestBody Classes classes){
+    public ResponseEntity<ResponseModel> save(@RequestBody ClassModel classes){
 		logger.info("save("+classes+")");
-		ResponseController respuestaBus = new ResponseController();
+		ResponseModel respuestaBus = new ResponseModel();
 		classesService.saveClasses(classes);
 		respuestaBus.setStatus(HttpStatus.CREATED.value());
 		respuestaBus.setMessage("Classes saved successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseController> update(@PathVariable Integer id, @RequestBody Classes classes) {
+	public ResponseEntity<ResponseModel> update(@PathVariable Integer id, @RequestBody ClassModel classes) {
 		logger.info("update("+classes+")");
-		Classes storedClasses = classesService.getClassesById(id);
+		ClassModel storedClasses = classesService.getClassesById(id);
 		
 		if (storedClasses==null)
 			throw new ClassesNotFoundException("id-" + id);
@@ -63,21 +63,21 @@ public class ClassesController {
 		storedClasses.setDescription(classes.getDescription());
 		storedClasses.setTittle(classes.getTittle());
 		classesService.saveClasses(storedClasses);
-		ResponseController respuestaBus = new ResponseController();
+		ResponseModel respuestaBus = new ResponseModel();
 		respuestaBus.setMessage("Classes updated successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/classes/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<ResponseController> delete(@PathVariable Integer id){
+	public ResponseEntity<ResponseModel> delete(@PathVariable Integer id){
 		logger.info("delete("+id+")");
-		Classes storedClasses = classesService.getClassesById(id);
+		ClassModel storedClasses = classesService.getClassesById(id);
 		if (storedClasses==null)
 			throw new ClassesNotFoundException("id-" + id);
 		
 		classesService.deleteClasses(id);
-        ResponseController respuestaBus = new ResponseController();
+        ResponseModel respuestaBus = new ResponseModel();
         respuestaBus.setMessage("Classes deleted successfully");
-		return new ResponseEntity<ResponseController>(respuestaBus,	HttpStatus.OK);
+		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
 	}
 }

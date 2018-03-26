@@ -3,11 +3,11 @@ package com.api.studentapi.model;
 import javax.persistence.*;
 
 @Entity
-public class Student {
+public class StudentModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private Classes classID;
+	private ClassModel classID;
 	private String lastName;
 	private String firstName;
 
@@ -35,11 +35,11 @@ public class Student {
 		this.firstName = firstName;
 	}
 
-	public Classes getClassID() {
+	public ClassModel getClassID() {
 		return classID;
 	}
 
-	public void setClassID(Classes classID) {
+	public void setClassID(ClassModel classID) {
 		this.classID = classID;
 	}
 

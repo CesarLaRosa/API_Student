@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.studentapi.model.Classes;
-import com.api.studentapi.model.Student;
+import com.api.studentapi.model.ClassModel;
+import com.api.studentapi.model.StudentModel;
 import com.api.studentapi.repository.ClassesRepository;
 import com.api.studentapi.service.ClassesService;
 
@@ -16,17 +16,17 @@ public class ClassesServiceImpl implements ClassesService {
 	private ClassesRepository classesRepository;
 	
 	@Override
-	public Iterable<Classes> listAllClasses() {
+	public Iterable<ClassModel> listAllClasses() {
 		 return classesRepository.findAll();
 	}
 
 	@Override
-	public Classes getClassesById(Integer id) {
+	public ClassModel getClassesById(Integer id) {
 		return classesRepository.findOne(id);
 	}
 
 	@Override
-	public Classes saveClasses(Classes classes) {
+	public ClassModel saveClasses(ClassModel classes) {
 		return classesRepository.save(classes);
 	}
 
@@ -36,17 +36,17 @@ public class ClassesServiceImpl implements ClassesService {
 	}
 
 	@Override
-	public List<Classes> findByTitle(String title) {
+	public List<ClassModel> findByTitle(String title) {
 		return classesRepository.findByTitle(title);
 	}
 
 	@Override
-	public List<Classes> findByDescription(String description) {
+	public List<ClassModel> findByDescription(String description) {
 		return classesRepository.findByDescription(description);
 	}
 
 	@Override
-	public List<Classes> findByStudent(Student searchable) {
+	public List<ClassModel> findByStudent(StudentModel searchable) {
 		return classesRepository.findByStudent(searchable);
 	}
 }

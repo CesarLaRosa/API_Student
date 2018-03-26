@@ -3,12 +3,12 @@ package com.api.studentapi.model;
 import javax.persistence.*;
 
 @Entity
-public class Classes {
+public class ClassModel {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer code;
-	private Student studentID;
+	private StudentModel studentID;
 	private String tittle;
 	private String description;
 	
@@ -30,10 +30,10 @@ public class Classes {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Student getStudentID() {
+	public StudentModel getStudentID() {
 		return studentID;
 	}
-	public void setStudentID(Student studentID) {
+	public void setStudentID(StudentModel studentID) {
 		this.studentID = studentID;
 	}
 	@Override
