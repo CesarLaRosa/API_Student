@@ -1,8 +1,11 @@
 package com.api.studentapi.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.studentapi.modelo.Classes;
 import com.api.studentapi.modelo.Student;
 import com.api.studentapi.repository.StudentRepository;
 import com.api.studentapi.service.StudentService;
@@ -32,5 +35,18 @@ public class StudentServiceImpl implements StudentService {
 		studentRepository.delete(id);
 	}
 
-	
+	@Override
+	public List<Student> findByLastName(String lastName) {
+		return studentRepository.findByLastName(lastName);
+	}
+
+	@Override
+	public List<Student> findByFirstName(String firstName) {
+		return studentRepository.findByFirstName(firstName);
+	}
+
+	@Override
+	public List<Student> findByClass(Classes searchable) {
+		return studentRepository.findByClass(searchable);
+	}
 }
