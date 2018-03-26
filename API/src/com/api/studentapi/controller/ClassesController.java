@@ -72,7 +72,7 @@ public class ClassesController {
 		}
 		
 		storedClasses.setDescription(classes.getDescription());
-		storedClasses.setTittle(classes.getTittle());
+		storedClasses.setTitle(classes.getTitle());
 		classesService.saveClasses(storedClasses);
 		responseModel.setMessage("Classes updated successfully");
 		return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);

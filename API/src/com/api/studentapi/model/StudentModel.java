@@ -1,16 +1,21 @@
 package com.api.studentapi.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-public class StudentModel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+public class StudentModel implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private ClassModel classID;
 	private String lastName;
 	private String firstName;
-
+	
+	public StudentModel(Integer id,String lastName, String firstName){
+		this.id=id;
+		this.firstName=firstName;
+		this.lastName=lastName;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
