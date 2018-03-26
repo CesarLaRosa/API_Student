@@ -17,33 +17,42 @@ import com.api.studentapi.model.StudentModel;
 import com.api.studentapi.service.StudentService;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/student/")
 public class StudentController {
 	private Logger logger = Logger.getLogger(getClass());
+	private ResponseModel responseModel;
 	
 	@Autowired
 	private StudentService studentService;
 	
-	@RequestMapping(value = "/students", method= RequestMethod.GET, produces = "application/json")
-    public Iterable<StudentModel> list(Model model){
+	@RequestMapping(value = "/", method= RequestMethod.GET, produces = "application/json", consumes= "application/json")
+    public ResponseEntity<ResponseModel> list(Model model){
+		responseModel = new ResponseModel();
         Iterable<StudentModel> productList = studentService.listAllStudents();
-        return productList;
+        responseModel.setStatus(HttpStatus.OK.value());
+        responseModel.setResult(productList);
+        return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
     }
 	
-	@RequestMapping(value = "/students/{id}", method= RequestMethod.GET, produces = "application/json")
-    public StudentModel showStudent(@PathVariable Integer id, Model model){
+	@RequestMapping(value = "/getStudent/{id}", method= RequestMethod.GET, produces = "application/json", consumes= "application/json")
+    public ResponseEntity<ResponseModel> getStudent(@PathVariable Integer id, Model model){
 		logger.info("showStudent("+id+")");
+		responseModel = new ResponseModel();
+		
 		StudentModel student = studentService.getStudentsById(id);
 		
 		if (student==null)
-		      throw new StudentNotFoundException("id-" + id);
+		{
+			throw new StudentNotFoundException("id-" + id);
+		}
 		
-        return student;
+		responseModel.setStatus(HttpStatus.OK.value());
+        responseModel.setResult(student);
+        return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
     }
-
-
-	@RequestMapping(value = "/students/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseModel> save(@RequestBody StudentModel student){
+	
+	@RequestMapping(value = "/saveStudent/", method = RequestMethod.POST, produces = "application/json", consumes= "application/json")
+    public ResponseEntity<ResponseModel> saveStudent(@RequestBody StudentModel student){
 		logger.info("save("+student+")");
 		ResponseModel respuestaBus = new ResponseModel();
 		studentService.saveStudent(student);
@@ -52,15 +61,17 @@ public class StudentController {
 		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
     }
 
-	@RequestMapping(value = "/students/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseModel> update(@PathVariable Integer id, @RequestBody StudentModel student) {
+	@RequestMapping(value = "/updateStudent/{id}", method = RequestMethod.PUT, produces = "application/json", consumes= "application/json")
+	public ResponseEntity<ResponseModel> updateStudent(@PathVariable Integer id, @RequestBody StudentModel student) {
 		logger.info("update("+id+","+student+")");
 		
 		StudentModel storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
-		      throw new StudentNotFoundException("id-" + id);
-		
+		{
+			throw new StudentNotFoundException("id-" + id);
+		}
+		    
 		storedStudent.setFirstName(student.getFirstName());
 		storedStudent.setLastName(student.getLastName());
 		studentService.saveStudent(storedStudent);
@@ -69,13 +80,15 @@ public class StudentController {
 		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
-	public ResponseEntity<ResponseModel> delete(@PathVariable Integer id){
+	@RequestMapping(value = "/deleteStudent/{id}", method = RequestMethod.DELETE, produces = "application/json", consumes= "application/json")
+	public ResponseEntity<ResponseModel> deleteStudent(@PathVariable Integer id){
 		logger.info("delete("+id+")");
 		StudentModel storedStudent = studentService.getStudentsById(id);
 		
 		if (storedStudent==null)
-		      throw new StudentNotFoundException("id-" + id);
+	    {
+			throw new StudentNotFoundException("id-" + id);
+	    }
 		
 		studentService.deleteStudent(id);
         ResponseModel respuestaBus = new ResponseModel();

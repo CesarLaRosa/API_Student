@@ -17,63 +17,75 @@ import com.api.studentapi.model.ResponseModel;
 import com.api.studentapi.service.ClassesService;
 
 @RestController
-@RequestMapping("/api/classes")
+@RequestMapping("/api/classes/")
 public class ClassesController {
 	private Logger logger = Logger.getLogger(getClass());
+	private ResponseModel responseModel;
 	
 	@Autowired
 	private ClassesService classesService;
 	
-	@RequestMapping(value = "/classes/", method = RequestMethod.GET)
-	public Iterable<ClassModel> list(Model model){
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json", consumes= "application/json")
+	public ResponseEntity<ResponseModel> list(Model model){
+		responseModel = new ResponseModel();
         Iterable<ClassModel> classesList = classesService.listAllClasses();
-        return classesList;
+        responseModel.setStatus(HttpStatus.OK.value());
+        responseModel.setResult(classesList);
+        return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
     }
 	
-	@RequestMapping(value = "/classes/{id}", method= RequestMethod.GET, produces = "application/json")
-    public ClassModel showClasses(@PathVariable Integer id, Model model){
+	@RequestMapping(value = "/getClasses/{id}", method= RequestMethod.GET, produces = "application/json", consumes= "application/json")
+    public ResponseEntity<ResponseModel> getClasses(@PathVariable Integer id){
 		logger.info("showClasses("+id+")");
+		responseModel = new ResponseModel();
 		ClassModel classes = classesService.getClassesById(id);
 		
 		if (classes==null)
+		{
 			throw new ClassesNotFoundException("id-" + id);
+		}
 		
-        return classes;
+		responseModel.setStatus(HttpStatus.OK.value());
+        responseModel.setResult(classes);
+        return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
     }
 
-
-	@RequestMapping(value = "/classes/", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<ResponseModel> save(@RequestBody ClassModel classes){
+	@RequestMapping(value = "/saveClasses/", method = RequestMethod.POST, produces = "application/json", consumes= "application/json")
+    public ResponseEntity<ResponseModel> saveClasses(@RequestBody ClassModel classes){
 		logger.info("save("+classes+")");
-		ResponseModel respuestaBus = new ResponseModel();
+		responseModel = new ResponseModel();
 		classesService.saveClasses(classes);
-		respuestaBus.setStatus(HttpStatus.CREATED.value());
-		respuestaBus.setMessage("Classes saved successfully");
-		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
+		responseModel.setStatus(HttpStatus.CREATED.value());
+		responseModel.setMessage("Classes saved successfully");
+		return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
     }
 
-	@RequestMapping(value = "/classes/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<ResponseModel> update(@PathVariable Integer id, @RequestBody ClassModel classes) {
+	@RequestMapping(value = "/updateClasses/{id}", method = RequestMethod.PUT, produces = "application/json", consumes= "application/json")
+	public ResponseEntity<ResponseModel> updateClasses(@PathVariable Integer id, @RequestBody ClassModel classes) {
 		logger.info("update("+classes+")");
+		responseModel = new ResponseModel();
 		ClassModel storedClasses = classesService.getClassesById(id);
 		
 		if (storedClasses==null)
+		{
 			throw new ClassesNotFoundException("id-" + id);
+		}
 		
 		storedClasses.setDescription(classes.getDescription());
 		storedClasses.setTittle(classes.getTittle());
 		classesService.saveClasses(storedClasses);
-		ResponseModel respuestaBus = new ResponseModel();
-		respuestaBus.setMessage("Classes updated successfully");
-		return new ResponseEntity<ResponseModel>(respuestaBus,	HttpStatus.OK);
+		responseModel.setMessage("Classes updated successfully");
+		return new ResponseEntity<ResponseModel>(responseModel,	HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/classes/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<ResponseModel> delete(@PathVariable Integer id){
+	@RequestMapping(value = "/deleteClasses/{id}", method = RequestMethod.DELETE, produces = "application/json", consumes= "application/json")
+	public ResponseEntity<ResponseModel> deleteClasses(@PathVariable Integer id){
 		logger.info("delete("+id+")");
 		ClassModel storedClasses = classesService.getClassesById(id);
 		if (storedClasses==null)
+		{
 			throw new ClassesNotFoundException("id-" + id);
+		}
 		
 		classesService.deleteClasses(id);
         ResponseModel respuestaBus = new ResponseModel();
