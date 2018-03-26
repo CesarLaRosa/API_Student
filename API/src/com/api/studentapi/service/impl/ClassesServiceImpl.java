@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.studentapi.modelo.Classes;
-import com.api.studentapi.modelo.Student;
+import com.api.studentapi.model.Classes;
+import com.api.studentapi.model.Student;
 import com.api.studentapi.repository.ClassesRepository;
 import com.api.studentapi.service.ClassesService;
 

@@ -1,4 +1,4 @@
-package com.api.studentapi.modelo;
+package com.api.studentapi.model;
 
 public class ResponseController implements java.io.Serializable{
 	

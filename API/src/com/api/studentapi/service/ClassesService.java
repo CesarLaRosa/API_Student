@@ -1,8 +1,9 @@
 package com.api.studentapi.service;
 
 import java.util.List;
-import com.api.studentapi.modelo.Classes;
-import com.api.studentapi.modelo.Student;
+
+import com.api.studentapi.model.Classes;
+import com.api.studentapi.model.Student;
 
 public interface ClassesService {
 	Iterable<Classes> listAllClasses();

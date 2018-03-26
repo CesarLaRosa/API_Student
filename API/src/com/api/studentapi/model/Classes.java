@@ -1,4 +1,4 @@
-package com.api.studentapi.modelo;
+package com.api.studentapi.model;
 
 import javax.persistence.*;
 

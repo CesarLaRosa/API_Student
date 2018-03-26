@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.studentapi.exceptions.StudentNotFoundException;
-import com.api.studentapi.modelo.ResponseController;
-import com.api.studentapi.modelo.Student;
+import com.api.studentapi.model.ResponseController;
+import com.api.studentapi.model.Student;
 import com.api.studentapi.service.StudentService;
 
 @RestController
